@@ -1,0 +1,155 @@
+curDir = '/controller';
+dirname = __dirname.substring(0, __dirname.length - curDir.length);
+
+const {Op} = require('sequelize');
+const Anime = require(dirname + '/models/Anime');
+const AnimeMusica = require(dirname + '/models/AnimeMusica');
+const Musica = require(dirname + '/models/Musica');
+const TemporadaAnime = require(dirname + '/models/TemporadaAnime');
+
+exports.pesquisaRapida = async function(req, res) {
+	res.send("Ainda não implementei");
+};
+
+exports.inicio = async function(req, res) {
+	res.send("Ainda não implementei");
+};
+
+exports.pesquisa = async function(req, res) {
+	try {
+		let queryTitulo = req.query.titulo.trim();
+		let page = parseInt(req.params.page);
+
+		if(page <= 0) {
+			res.render('404');
+			return;
+		}
+
+		let animes = await Anime.findAll({
+			attributes: ['id', 'titulo', 'foto', 'sinopse'],
+			offset: 5 * (page - 1),
+			limit: 5,
+			where : {		
+				[Op.or]: {
+					titulo: {[Op.startsWith]: queryTitulo},
+					titulo_original: {[Op.startsWith]: queryTitulo}
+				}
+			}
+		});
+
+		for(let i = 0; i < animes.length; ++i)
+			animes[i].sinopse = animes[i].sinopse.substring(0, 500);
+
+		res.render('anime/resultados', {
+			shows: animes,
+			queryTitulo: queryTitulo,
+			previousPage: page > 1 ? '/anime/results/' + (page - 1) + '?titulo=' + queryTitulo : false,
+			nextPage: '/anime/results/' + (page + 1) + '?titulo=' + queryTitulo,	
+			titulo: 'Resultados'
+		});
+	} catch(err) {
+
+	}
+};
+
+exports.exibe = async function(req, res) {
+	try {
+		let id = parseInt(req.params.id);
+
+		let anime = await Anime.findByPk(id);
+
+		let musicas = await anime.getMusicas({
+			attributes: ['id','titulo','artista','youtube']
+		}); 
+
+		let temporadas = await anime.getTemporadas({
+			attributes: ['id', 'direcao', 'roteiro', 'estudio', 'foto', 'temporada']
+		});
+
+		res.render('anime/perfil', {
+			anime: anime, 
+			musicas: musicas,
+			temporadas: temporadas,
+			titulo: anime.titulo
+		});
+	} catch(err) {
+
+	}
+};
+
+exports.cadastraTemporada = async function(req, res) {	
+	try {
+		let id = parseInt(req.params.id);
+
+		let anime = await Anime.findByPk(id);
+
+		let temporada = {};
+
+		temporada.direcao = req.body.direcao.trim();
+		temporada.roteiro = req.body.roteiro.trim();
+		temporada.estudio = req.body.estudio.trim();
+		temporada.foto = req.body.foto.trim();
+		temporada.temporada = req.body.temporada.trim();
+		temporada.animeId = id;
+
+		TemporadaAnime.create(temporada);
+
+		res.redirect('/developer/anime/' + id + '/season/add');
+	} catch(err) {
+
+	}
+};
+
+exports.cadastra = function(req, res) {
+	try {
+		let anime = {};
+
+		anime.titulo = req.body.titulo;
+		anime.titulo_original = req.body.titulo_original;
+		anime.genero = req.body.genero;
+		anime.sinopse = req.body.sinopse;
+		anime.foto = req.body.foto;
+		anime.bg_foto = req.body.bg_foto;
+		
+		Anime.create(anime);
+
+		res.redirect('/developer/anime/add');
+	} catch(err) {
+
+	}
+};
+
+exports.adicionaMusica = async function(req, res) {
+	try {
+		let animeId = parseInt(req.params.id);
+
+		let musicaId = parseInt(req.body.musica);
+
+		let anime = await Anime.findByPk(animeId);
+		
+		let musica = await Musica.findByPk(musicaId);
+
+		anime.addMusica(musica, {through: AnimeMusica});
+		
+		res.redirect('/developer/anime/joinMusic/' + animeId);	
+	} catch(err) {
+
+	}
+};
+
+exports.relacionaMusica = async function(req, res) {
+	try {
+		let musicas = await Musica.findAll({
+			attributes: ['id', 'titulo', 'artista'],
+			order: [['createdAt', 'DESC']]
+		});
+		
+		res.render('anime/adiciona_musica', {
+			id: req.params.id, 
+			musicas: musicas,
+			titulo: 'Adicionar trilha sonóra'
+		});
+	} catch(err) {
+
+	}
+};

@@ -1,0 +1,53 @@
+const db = require('./db');
+const Musicas = require('./Musicas');
+
+const Filmes = db.sequelize.define('filmes', {
+	titulo: {
+		type: db.Sequelize.STRING,
+		allowNull: false
+	},
+	genero: {
+		type: db.Sequelize.STRING,
+		allowNull: false
+	},
+	sinopse: {
+		type: db.Sequelize.TEXT,
+		allowNull: false
+	},
+	ano: {
+		type: db.Sequelize.INTEGER,
+		allowNull: false
+	},
+	duracao: {
+		type: db.Sequelize.INTEGER,
+		allowNull: false
+	},	
+	foto: {
+		type: db.Sequelize.STRING,
+		allowNull: false
+	},
+	bg_foto: {
+		type: db.Sequelize.STRING,
+		allowNull: false
+	},
+	direcao: {
+		type: db.Sequelize.STRING,
+		allowNull: false
+	},
+	roteiro: {
+		type: db.Sequelize.STRING,
+		allowNull: false
+	},
+	titulo_original: {
+		type: db.Sequelize.STRING,
+		allowNull: false
+	}
+});
+
+/*
+	Filmes.sync({force: true});
+*/
+
+module.exports = Filmes;
+
+

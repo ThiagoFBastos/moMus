@@ -1,0 +1,11 @@
+const db = require('./db');
+const Filme = require('./Filmes');
+const Musica = require('./Musicas');
+
+const FilmesMusicas = db.sequelize.define('filmes_musicas', {});
+
+Musicas.belongsToMany(Filmes, {through: FilmesMusicas});
+Filmes.belongsToMany(Musicas, {through: FilmesMusicas})
+//FilmesMusicas.sync({force: true});
+
+module.exports = FilmesMusicas; 

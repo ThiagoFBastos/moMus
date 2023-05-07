@@ -1,0 +1,16 @@
+<div class = "container">
+	<h2 class = "text-center"> Adicione uma música ao filme </h2>
+	<form method = "post" action = "/filme/{{id}}/join/music_post">
+		<div class = "form-group">
+			<label> Música </label>
+			<select name = "musica" class="form-control form-select form-select-sm">
+			  {{#each musicas}}
+				<option value = {{id}}> {{titulo}} - {{artista}} </option>
+			  {{/each}}
+			</select>
+		</div>
+		<div class = "container text-center"> 
+			<button type = "submit" class = "btn btn-primary btn-lg"> Cadastrar </button>
+		</div>
+	</form>
+</div>

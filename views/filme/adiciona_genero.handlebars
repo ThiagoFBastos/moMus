@@ -1,0 +1,15 @@
+<div class = "container">
+	<form method = "post" action = "/developer/filme/{{id}}/join/gender">
+		<div class = "form-group">
+			<label> Gênero </label>
+			<select name = "genero" class="form-control form-select form-select-sm" >
+				{{#each generos}}
+					<option value = "{{id}}"> {{nome}} </option>
+				{{/each}}
+			</select>
+		</div>
+		<div class = "container text-center"> 
+			<button type = "submit" class = "btn btn-primary btn-lg"> Cadastrar </button>
+		</div>
+	</form>
+</div>

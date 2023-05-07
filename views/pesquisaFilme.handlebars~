@@ -1,0 +1,14 @@
+<div class="container-fluid align-items-center">
+	<h1 class = "text-center"> Filmes </h1>
+	<form class = "row justify-content-center bg-dark" method = "get" action = "/filme/results">
+		<div class="col-auto">
+			<label for="pesquisa"> título </label>
+		</div>
+		<div class="col-auto">
+			<input name = "titulo" class = "form-control">
+		</div>
+		<div class="col-auto">
+		<button type="submit" class="btn btn-primary">Pesquisar</button>
+		</div>
+	</form>
+</div>

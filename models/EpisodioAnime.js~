@@ -1,0 +1,9 @@
+const db = require('./db');
+const Anime = require('./Anime');
+
+const EpisodioAnime = db.sequelize.define('episodiosAnime', {
+	numero: {
+		type: db.sequelize.INTEGER,
+		allowNull: false
+	}
+});

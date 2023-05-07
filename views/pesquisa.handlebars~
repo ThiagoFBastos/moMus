@@ -1,0 +1,17 @@
+<div class="container-fluid align-items-center">
+	<h1 class = "text-center"> {{tipo}} </h1>
+	<form class = "row justify-content-center" method = "get" action = "/{{tipo}}/results/1">
+		<div class="col-auto">
+			<label for="pesquisa"> título </label>
+		</div>
+		<div class="col-auto">
+			<input name = "titulo" class = "form-control">
+		</div>
+		<div class="col-auto">
+		<button type="submit" class="btn btn-primary">Pesquisar</button>
+		<a href = "" type="button" class="btn btn-secondary">Adicionar {{tipo}}</a>
+		</div>
+	</form>
+</div>
+
+

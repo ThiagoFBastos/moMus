@@ -1,0 +1,36 @@
+const db = require('./db');
+
+const Animes = db.sequelize.define('animes', {
+	titulo: {
+		type: db.Sequelize.STRING,
+		allowNull: false
+	},
+	genero: {
+		type: db.Sequelize.STRING,	
+		allowNull: false
+	},
+	sinopse: {
+		type: db.Sequelize.TEXT,
+		allowNull: false
+	},
+	foto: {
+		type: db.Sequelize.STRING,
+		allowNull: false
+	},
+	/*
+	bg_foto: {
+		type: db.Sequelize.STRING,
+		allowNull: false
+	},
+	*/
+	titulo_original: {
+		type: db.Sequelize.STRING,
+		allowNull: false
+	}
+});
+
+/*
+Animes.sync({force: true});
+*/
+
+module.exports = Animes;

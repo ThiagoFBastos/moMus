@@ -1,0 +1,41 @@
+<div class = "container-fluid">
+	<div class = "row text-center">
+		<h2 class = "text-dark">{{serie.titulo}} / {{serie.titulo_original}} </h2>
+	</div>
+	<div class = "row align-items-center justify-content-center ng">
+		<div class = "col-sm-4 text-center">
+			<img src = "/images/{{serie.foto}}" class="img-thumbnail"/> 
+			<table class = "table bg-light">	
+				<tr>
+					<td> Gênero </td>
+					<td> {{serie.genero}} </td>
+				</tr>
+			</table>
+		</div>
+		<div class = "col-sm-6">
+			<h4> Sinopse </h4>
+			<p> {{serie.sinopse}} </p>
+		</div>
+	</div>
+</div>
+<div class = "container">
+	<nav class = "navbar navbar-expand-lg navbar-dark bg-dark">
+		<div class = "container-fluid">
+			<h4 class = "navbar-brand"> Músicas </h4>
+		</div>
+	</nav>
+	<table class = "table bg-light">	
+		<tr>
+			<th class="text-center"> Música </th>
+			<th class="text-center"> Artista </th>
+			<th class="text-center"> Youtube </th>
+		</tr>
+		{{#each musicas}}
+		<tr>
+			<td> {{this.titulo}} </td>
+			<td> {{this.artista}} </td>
+			<td> <a href = "{{this.youtube}}" target = "_blank"> link </a> </td>
+		</tr>
+		{{/each}}
+	</table>
+</div>

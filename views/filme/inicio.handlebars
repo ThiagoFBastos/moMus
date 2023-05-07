@@ -1,0 +1,82 @@
+<div id = "carouselPresentation" class = "carousel" data-bs-ride = "carousel">	
+	<div class = "carousel-indicators">
+		{{#each carouselFilmes}}
+			<button type = "button" data-bs-target = "#carouselPresentation" data-bs-slide-to = "{{@index}}" {{#if @first}} class = "active" aria-current = "true" {{/if}} aria-label = "{{titulo}}"></button>
+		{{/each}}
+	</div>
+	<div class="carousel-inner">
+		{{#each carouselFilmes}}
+			<div class="carousel-item {{#if @first}} active {{/if}}">
+				<a href = "/filme/profile/{{id}}">
+		  		<img class="d-block w-100" src="/images/background/{{bg_foto}}" alt = "{{titulo}}">
+				<div class="carousel-caption">
+					<h3 class = "text-dark bg-light">{{titulo}}</h3>
+					<p class = "text-dark bg-light">
+						{{#each generos}}
+							{{nome}}
+							{{#if @last}} {{else}} / {{/if}}
+						{{/each}}
+					</p>
+				</div>
+				</a>
+			</div>
+		{{/each}}
+	  </div>
+	  <a class="carousel-control-prev" href="#carouselPresentation" role="button" data-bs-slide="prev">
+		<span class="carousel-control-prev-icon" aria-hidden="true"></span>	
+	  </a>
+	  <a class="carousel-control-next" href="#carouselPresentation" role="button" data-bs-slide="next">
+		<span class="carousel-control-next-icon" aria-hidden="true"></span>
+	  </a>
+</div>
+
+<div class="container-fluid align-items-center justify-content-center">
+	<h1 class = "text-center"> Filmes </h1>
+	<p class = "text-center">
+		No moMus você pode saber quais são as trilhas sonoras que
+		tocaram num determinado filme.
+	</p>
+	<form class = "row justify-content-center" autocomplete = "off" method = "get" action = "/filme/results/1">
+		<div class="col-auto">
+			<input id = "textSearch" name = "titulo" class = "form-control d-block" placeholder = "nome do filme...">
+		</div>
+		<div class="col-auto">
+			<button type="submit" class="btn btn-primary">Pesquisar</button>
+		</div>
+	</form>
+</div>
+
+<div class = "container">
+	<h1>
+		Recentes
+		<a href = "/filme/results/1?order_by_created=desc" class = "text-decoration-none"> &rightarrow; </a>
+	</h1>
+	{{#each filmesRecentes}}
+		{{#if (cmpModulo @index 4 0)}}
+			<div class = "row align-items-start">
+		{{/if}}
+
+		<div class = "col text-center">
+			<a href = "/filme/profile/{{id}}" class = "text-decoration-none">
+				<div class = "row">
+					<img src = "/images/thumb/{{foto}}">
+				</div>
+				<div class = "row">
+					<h5 class = "text-dark">{{titulo}}</h5>
+				</div>
+			</a>
+		</div>
+
+		{{#if (cmpModulo @index 4 3)}}
+			</div>
+		{{else if @last}}
+			</div>
+		{{/if}}
+	{{/each}}
+</div>
+
+<script type = "text/javascript">
+	$(document).ready(function() {
+		$(".carousel").carousel({interval: 5000});
+	});
+</script>

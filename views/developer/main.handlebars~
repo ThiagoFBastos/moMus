@@ -1,0 +1,20 @@
+<div class = "row">
+	<div class = "col text-center">
+		<a href = "/developer/anime/add" target = "_blank" class = "btn btn-primary"> Cadastrar anime </a>
+	</div>
+	<div class = "col text-center">
+		<a href = "/developer/filme/add" target = "_blank" class = "btn btn-primary"> Cadastrar filme </a>
+	</div>
+	<div class = "col text-center">
+		<a href = "/developer/serie/add" target = "_blank" class = "btn btn-primary"> Cadastrar série </a>
+	</div>
+	<div class = "col text-center">
+		<a href = "/developer/novela/add" target = "_blank" class = "btn btn-primary"> Cadastrar novela </a>
+	</div>
+	<div class = "col text-center">
+		<a href = "/developer/musica/add" target = "_blank" class = "btn btn-primary"> Cadastrar música </a>
+	</div>
+	<div class = "col text-center">
+		<a href = "/developer/genero/add" target = "_blank" class = "btn btn-primary"> Cadastrar gênero </a>
+	</div>
+</div>

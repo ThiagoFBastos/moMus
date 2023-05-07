@@ -1,0 +1,33 @@
+const db = require('./db');
+const Anime = require('./Anime');
+
+const TemporadaAnime = db.sequelize.define('temporadas_anime', {
+	direcao: {
+		type: db.Sequelize.STRING,
+		allowNull: false
+	},
+	roteiro: {
+		type: db.Sequelize.STRING,
+		allowNull: false
+	},
+	estudio: {
+		type: db.Sequelize.STRING,
+		allowNull: false
+	},
+	foto: {
+		type: db.Sequelize.STRING,
+		allowNull: false
+	},
+	temporada: {
+		type: db.Sequelize.INTEGER,	
+		allowNull: false,
+		unique: true
+	}
+});
+
+Anime.hasMany(TemporadaAnime);
+TemporadaAnime.belongsTo(Anime);
+
+//TemporadaAnime.sync({force: true});
+
+module.exports = TemporadaAnime;

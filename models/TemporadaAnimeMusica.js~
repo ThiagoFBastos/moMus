@@ -1,0 +1,17 @@
+const db = require('./db');
+const TemporadaAnime = require('./TemporadaAnime');
+const Musica = require('./Musica');
+
+const TemporadaAnimeMusica = db.sequelize.define('temporadas_anime_musicas', {
+	tipo: {
+		type: db.Sequelize.ENUM,
+		values: ['OPENING', 'ENDING', 'OST']
+	}
+});
+
+TemporadaAnime.belongsToMany(Musica, {through: TemporadaAnimeMusica});
+Musica.belongsToMany(TemporadaAnime, {through: TemporadaAnimeMusica});
+
+//TemporadaAnimeMusica.sync({force: true});
+
+module.exports = TemporadaAnimeMusica;

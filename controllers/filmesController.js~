@@ -1,0 +1,279 @@
+curDir = '/controller';
+dirname = __dirname.substring(0, __dirname.length - curDir.length);
+
+const Filme = require(dirname + '/models/Filme');
+const {Op} = require('sequelize');
+const FilmeMusica = require(dirname + '/models/FilmeMusica');
+const Musica = require(dirname + '/models/Musica');
+const Genero = require(dirname + '/models/Genero');
+const FilmeGenero = require(dirname + '/models/FilmeGenero');
+
+const pagesOffset = 5;
+
+exports.inicio = async function(req, res) {
+	try {
+		let carouselFilmes = await Filme.findAll({
+			attributes: ['id', 'titulo', 'bg_foto', 'createdAt'],
+			limit: 5,
+			order: [['createdAt', 'desc']],
+			include: [{
+				model: Genero,
+				required: true
+			}]
+		});
+
+		let filmesRecentes = await Filme.findAll({
+			attributes: ['id', 'titulo', 'foto', 'updatedAt'],
+			limit: 8,
+			order: [['updatedAt', 'desc']]
+		});
+
+		res.render('filme/pesquisa', {
+			titulo: 'Pesquisa',
+			carouselFilmes: carouselFilmes,
+			filmesRecentes: filmesRecentes
+		});
+	} catch(err) {
+		res.send(err); // provisório
+	}
+};
+
+exports.pesquisaRapida = async function(req, res) {
+	try {
+		let queryTitulo = req.query.titulo.trim();
+
+		let filmes = await Filme.findAll({
+			attributes: ['id', 'titulo', 'foto'],
+			where: {
+				[Op.or]: {
+					titulo: {[Op.startsWith]: queryTitulo},	
+					titulo_original: {[Op.startsWith]: queryTitulo}
+				}
+			},
+			limit: 5
+		});
+
+		res.json({filmes: filmes});
+	} catch(err) {
+		res.json({filmes: []}); // provisório
+	}
+};
+
+exports.pesquisa = async function(req, res) {
+	try {
+		let queryTitulo = req.query.titulo != undefined ? req.query.titulo.trim() : '';
+		let page = parseInt(req.params.page);
+		let get_params = '?titulo=' + queryTitulo;
+
+		if(page <= 0) {
+			res.render('404');
+			return;
+		}
+
+		let searchAttributes = {
+			where: {
+				[Op.or]: {
+					titulo: {[Op.startsWith]: queryTitulo},
+					titulo_original: {[Op.startsWith]: queryTitulo}
+				}
+			},
+			order: []
+		};
+
+		if(req.query.genero != undefined) {
+			searchAttributes.include = [{
+				model: Genero,
+				required: true,
+				attributes: [],
+				where: {nome: req.query.genero}
+			}];
+			get_params += '&genero=' + req.query.genero;
+		}
+
+		let cnt = await Filme.count(searchAttributes);
+
+		if(req.query.order_by_created != undefined) {
+			let type = req.query.order_by_created;
+			if(type == 'asc' || type == 'desc') {
+				searchAttributes.order.push(['createdAt', type]);
+				get_params += '&order_by_created=' + type;
+			}
+		}
+
+		searchAttributes.order.push(['id', 'asc']);
+
+		searchAttributes.attributes = ['id', 'titulo', 'foto', 'sinopse', 'createdAt'];
+		searchAttributes.offset = pagesOffset * (page - 1);
+		searchAttributes.limit = pagesOffset;
+
+		let filmes = await Filme.findAll(searchAttributes);
+
+		let pages = [];
+
+		for(let i = 0; i < filmes.length; ++i)
+			filmes[i].sinopse = filmes[i].sinopse.substring(0, 500);
+
+		let total_pages = (cnt + pagesOffset - 1) / pagesOffset | 0;
+
+		if(total_pages <= pagesOffset) {
+			for(let i = 1; i <= total_pages; ++i) {
+				let url = '/filme/results/' + i + get_params;
+				pages.push({url: url, text: i, is_cur_page: i == page});
+			}
+		} else if(page >= 3 && page + 2 <= total_pages) {
+			for(let i = 0; i < pagesOffset; ++i) {
+				let p = page - (pagesOffset >> 1)  + i;
+				let url = '/filme/results/' + p + get_params;
+				pages.push({url: url, text: p, is_cur_page: p == page});
+			}
+		} else if(page + 2 <= total_pages) {
+			for(let i = 1; i <= pagesOffset; ++i) {
+				let url = '/filme/results/' + i + get_params;
+				pages.push({url: url, text: i, is_cur_page: i == page});
+			}
+		} else {
+			for(let i = total_pages - pagesOffset + 1; i <= total_pages; ++i) {
+				let url = '/filme/results/' + i + get_params;
+				pages.push({url: url, text: i, is_cur_page: i == page});
+			}
+		}
+		
+		let previousPage = page > 1 ? "/filme/results/" + (page - 1) + get_params : false;
+		let nextPage = page < total_pages ? "/filme/results/" + (page + 1) + get_params : false;
+
+		res.render('filme/resultados', {
+			cnt_resultados: cnt,
+			shows: filmes,
+			previousPage: previousPage,
+			nextPage: nextPage,
+			pages: pages,
+			titulo: 'Resultados',	
+			queryTitulo: queryTitulo
+		});
+	} catch(err) {
+		res.json(err); // provisório
+	}
+};
+
+exports.cadastra = function(req, res) {
+	try {
+		let filme = {};
+
+		filme.titulo = req.body.titulo.trim();
+		filme.genero = req.body.genero.trim();
+		filme.sinopse = req.body.sinopse.trim();
+		filme.ano = parseInt(req.body.ano);
+		filme.duracao = parseInt(req.body.duracao);
+		filme.foto = req.body.foto.trim();
+		filme.bg_foto = req.body.bg_foto.trim();
+		filme.direcao = req.body.direcao.trim();
+		filme.roteiro = req.body.roteiro.trim();
+		filme.titulo_original = req.body.titulo_original.trim();
+
+		Filme.create(filme);
+
+		res.redirect('/developer/filme/add');
+	} catch(err) {
+		res.send(err); //provisório
+	}
+};
+
+exports.exibe = async function(req, res) {
+	try {
+		let id = parseInt(req.params.id);
+
+		let filme = await Filme.findByPk(id);
+
+		if(filme == null) {
+			res.render('404');
+			return;
+		}
+
+		let musicas = await filme.getMusicas({
+			attributes: ['id','titulo','artista','youtube'],
+			order: [['titulo', 'ASC']]
+		});
+
+		let generos = await filme.getGeneros({
+			attributes: ['nome'],
+			order: [['nome', 'asc']]
+		});
+
+		res.render('filme/perfil', {
+			filme: filme, 
+			musicas: musicas,
+			generos: generos,
+			titulo: filme.titulo
+		});
+	} catch(err) {
+		res.send("ERRO"); // provisório
+	}
+};
+
+exports.adicionaMusica = async function(req, res) {
+	try {
+		let filmeId = parseInt(req.params.id);
+
+		let musicaId = parseInt(req.body.musica);
+
+		let filme = await Filme.findByPk(filmeId);
+
+		let musica = await Musica.findByPk(musicaId);
+		
+		filme.addMusica(musica, {through: FilmeMusica});
+
+		res.redirect('/developer/filme/joinMusic/' + filmeId);	
+	} catch(err) {
+		res.send("ERRO"); // provisório
+	}
+};
+
+exports.relacionaMusica = async function(req, res) {
+	try {
+		let musicas = await Musica.findAll({
+			attributes: ['id', 'titulo', 'artista'],
+			order: [['createdAt', 'DESC']]
+		});
+
+		res.render('filme/adiciona_musica', {
+			id: req.params.id, 
+			musicas: musicas,		
+			titulo:  'Adicionar trilha sonóra'
+		});
+	} catch(err) {
+		res.send("ERRO"); // provisório
+	}
+};
+
+exports.adicionaGenero = async function(req, res) {
+	try {
+		let idFilme = parseInt(req.params.id);
+
+		let idGenero = parseInt(req.body.genero);
+
+		let filme = await Filme.findByPk(idFilme);
+
+		let genero = await Genero.findByPk(idGenero);
+
+		filme.addGenero(genero, {through: FilmeGenero});
+
+		res.redirect('/developer/filme/joinGender/' + idFilme);
+	} catch(err) {
+		res.send("ERRO"); // provisório
+	}
+};
+
+exports.relacionaGenero = async function(req, res) {
+	try {
+		let generos = await Genero.findAll({attributes: ['id', 'nome']});
+
+		res.render('filme/adiciona_genero', {
+			id: req.params.id,
+			generos: generos,
+			titulo: 'Adicionar gênero'
+		});
+	} catch(err) {
+		res.send("ERRO"); // provisório
+	}
+};
+

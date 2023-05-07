@@ -1,0 +1,20 @@
+<div class = "container">
+	<form method = "post" action = "/developer/genero/add">
+		<div class = "row">
+			<div class = "col">
+				<div class = "form-group">
+					<label> Nome </label>
+					<input class = "form-control" name = "nome">
+				</div>			
+			</div>
+			<div class = "col">
+				<div class = "form-group">
+					<label> Nome </label>
+					<textarea class = "form-control" name = "descricao">
+					</textarea>
+				</div>	
+			</div>
+		</div>
+		<button type = "submit" class = "btn btn-primary"> Cadastrar </button>
+	</form>
+</div>

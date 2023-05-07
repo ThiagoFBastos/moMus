@@ -1,0 +1,134 @@
+curDir = '/controller';
+dirname = __dirname.substring(0, __dirname.length - curDir.length);
+
+const {Op} = require('sequelize');
+const Serie = require(dirname + '/models/Serie');
+const SerieMusica = require(dirname + '/models/SerieMusica');
+const Musica = require(dirname + '/models/Musica');
+
+exports.inicializaInicio = async function(req, res) {
+
+};
+
+exports.pesquisaRapida = async function(req, res) {
+
+};
+
+exports.adicionaGenero = async function(req, res) {
+
+};
+
+exports.relacionaGenero = async function(req, res) {
+
+};
+
+exports.pesquisa = async function(req, res) {
+	try {
+		let queryTitulo = req.query.titulo.trim();
+
+		let page = parseInt(req.params.page);
+
+		if(page <= 0) {
+			res.render('404');
+			return;
+		}
+
+		let series = await Serie.findAll({
+			attributes: ['id', 'titulo', 'foto', 'sinopse'],
+			offset: 5 * (page - 1),
+			limit: 5,
+			where : {
+				[Op.or]: {
+					titulo: {[Op.startsWith]: queryTitulo},
+					titulo_original: {[Op.startsWith]: queryTitulo}
+				}
+			}
+		});
+
+		for(let i = 0; i < series.length; ++i)
+			series[i].sinopse = series[i].sinopse.substring(0, 500);
+			
+		res.render('serie/resultados', {
+			shows: series,
+			queryTitulo: queryTitulo,
+			previousPage: page > 1 ? '/serie/results/' + (page - 1) + '?titulo=' + queryTitulo : false,
+			nextPage: '/serie/results/' + (page + 1) + '?titulo=' + queryTitulo,
+			titulo: 'Resultados'
+		});
+	} catch(err) {
+		
+	}
+};
+
+exports.exibe = async function(req, res) {
+	try {
+		let id = parseInt(req.params.id);
+
+		let serie = await Serie.findByPk(id);
+
+		let musicas = await serie.getMusicas({
+			attributes:  ['id','titulo','artista','youtube'],
+			order: [['titulo', 'asc']]
+		});
+
+		res.render('serie/perfil', {
+			serie: serie, 
+			musicas: musicas,
+			titulo: serie.titulo
+		});
+	} catch(err) {
+
+	}
+};
+
+exports.cadastra = function(req, res) {
+	try {
+		let serie = {};
+		
+		serie.titulo = req.body.titulo.trim();
+		serie.titulo_original = req.body.titulo_original.trim();
+		serie.genero = req.body.genero.trim();
+		serie.sinopse = req.body.sinopse.trim();
+		serie.foto = req.body.foto.trim();
+		serie.bg_foto = req.body.bg_foto.trim();
+		
+		Serie.create(serie);
+	} catch(err) {
+		
+	}
+};
+
+exports.adiciona_musica = async function(req, res) {
+	try {
+		let serieId = parseInt(req.params.id);
+
+		let musicaId = parseInt(req.query.musica);	
+		
+		let serie = await Serie.findByPk(serieId);
+
+		let musica = await Musica.findByPk(musicaId);
+
+		serie.addMusica(musica, {through: SerieMusica});
+
+		res.redirect('/developer/serie/joinMusic/' + serieId);
+	} catch(err) {
+
+	}
+};
+
+exports.relaciona_musica = async function(req, res) {
+	try {
+		let musicas = await Musica.findAll({
+			attributes: ['id', 'titulo', 'artista', 'createdAt'],
+			order: [['createdAt', 'DESC']]
+		});
+
+		res.render('serie/adiciona_musica', {
+			id: req.params.id, 
+			musicas: musicas,
+			titulo: 'Adicionar música'
+		});
+	} catch(err) {
+		
+	}
+};

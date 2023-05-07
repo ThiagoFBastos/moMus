@@ -1,0 +1,40 @@
+const db = require('./db');
+
+const Novelas = db.sequelize.define('novela', {
+	titulo: {
+		type: db.Sequelize.STRING,
+		allowNull: false
+	},
+	direcao: {
+		type: db.Sequelize.STRING,
+		allowNull: false
+	},
+	autor: {
+		type: db.Sequelize.STRING,
+		allowNull: false
+	},
+	emissora: {
+		type: db.Sequelize.STRING,
+		allowNull: false
+	},
+	ano: {
+		type: db.Sequelize.INTEGER,
+		allowNull: false
+	},
+	foto: {
+		type: db.Sequelize.STRING,
+		allowNull: false
+	},
+	bg_foto: {
+		type: db.Sequelize.STRING,
+		allowNull: false
+	},
+	sinopse: {
+		type: db.Sequelize.STRING,
+		allowNull: false
+	}
+});
+
+//Novelas.sync({force: true});
+
+module.exports = Novelas;
