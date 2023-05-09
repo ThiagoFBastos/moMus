@@ -65,10 +65,10 @@
 		</div>
 	</div>
 </div>
-<div class = "container">
-	<nav class = "navbar navbar-expand-lg navbar-dark bg-dark">
+<div class = "container-fluid">
+	<nav class = "navbar navbar-expand-lg text-dark">
 		<div class = "container-fluid">
-			<h4 class = "navbar-brand" >Trilha Sonora</h4>
+			<h4 class = "navbar-brand" >Trilhas Sonoras</h4>
 			<div class="collapse navbar-collapse">
 			  	<ul class="navbar-nav navbar-nav-scroll">
 					{{#if DEVELOPER}}
@@ -89,7 +89,7 @@
 			</form>
 		</div>
 	</nav>
-	<table class = "table bg-light">	
+	<table class = "table">	
 		<tr>
 			<th>Música</th>
 			<th>Artista</th>
@@ -99,7 +99,9 @@
 		<tr>
 			<td class = "musicTitle">{{this.titulo}}</td>
 			<td>{{this.artista}}</td>
-			<td><a href = "{{this.youtube}}" target = "_blank">link</a></td>
+			<td><a href = "{{this.youtube}}" target = "_blank">
+				<img src = "/images/miniatura/youtube.jpg"> 
+			</a></td>
 		</tr>
 		{{/each}}
 	</table>
