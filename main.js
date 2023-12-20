@@ -10,12 +10,10 @@ const handlebars = require('handlebars');
 //routes
 const indexRoutes = require('./routes/indexRoutes');
 const filmeRoutes = require('./routes/filmeRoutes');
-//const animeRoutes = require('./routes/animeRoutes');
-//const serieRoutes = require('./routes/serieRoutes');
-//const novelaRoutes = require('./routes/novelaRoutes');
 const developerRoutes = require('./routes/developerRoutes');
 
 app.locals.DEVELOPER = true;
+app.locals.FILME = true;
 
 //handlebars & bodyParser
 app.engine('handlebars', engine({defaultLayout: 'main', runtimeOptions: {
@@ -33,9 +31,6 @@ app.use(express.static('public'));
 
 app.use('/', indexRoutes);
 app.use('/filme', filmeRoutes);
-//app.use('/serie', serieRoutes);
-//app.use('/anime', animeRoutes);
-//app.use('/novela', novelaRoutes);
 
 if(app.locals.DEVELOPER) app.use('/developer', developerRoutes);
 

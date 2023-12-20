@@ -1,10 +1,7 @@
-curDir = '/routes';
-dirname = __dirname.substring(0, __dirname.length - curDir.length);
-
 const express = require('express');
 const router = express.Router();
-const FilmesController = require(dirname + '/controllers/filmesController');
-const Filme = require(dirname + '/models/Filme');
+const FilmesController = require('../controllers/filmesController');
+const Filme = require('../models/Filme');
 
 router.param('filmeId', function(req, res, next, id) {
 	Filme.findByPk(id).then(filme => {

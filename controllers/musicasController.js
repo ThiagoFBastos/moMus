@@ -1,8 +1,5 @@
-curDir = '/controllers';
-dirname = __dirname.substring(0, __dirname.length - curDir.length);
-
 const {Op} = require('sequelize');
-const Musica = require(dirname + '/models/Musica');
+const Musica = require('../models/Musica');
 
 exports.cadastroMusica = function(req, res) {
 	let musica = {};

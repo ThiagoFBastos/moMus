@@ -1,12 +1,9 @@
-curDir = '/controllers';
-dirname = __dirname.substring(0, __dirname.length - curDir.length);
-
-const Filme = require(dirname + '/models/Filme');
+const Filme = require('../models/Filme');
 const {Op} = require('sequelize');
-const FilmeMusica = require(dirname + '/models/FilmeMusica');
-const Musica = require(dirname + '/models/Musica');
-const Genero = require(dirname + '/models/Genero');
-const FilmeGenero = require(dirname + '/models/FilmeGenero');
+const FilmeMusica = require('../models/FilmeMusica');
+const Musica = require('../models/Musica');
+const Genero = require('../models/Genero');
+const FilmeGenero = require('../models/FilmeGenero');
 
 exports.editaGET = async function(req, res, next) {
 	res.render('filme/editor', {
