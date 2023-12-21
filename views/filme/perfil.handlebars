@@ -1,108 +1,107 @@
 <div class = "container-fluid">
-	
-    <h2 class = "text-dark text-center">
-	    {{filme.titulo}}
-    </h2>
-  
-	<div class = "row align-items-center justify-content-center" style = "
-		background-image: url('/images/background/{{filme.bg_foto}}');
-		background-repeat: no-repeat;
-		background-position: center;
-		background-size: cover;
-	">
-		<div class = "col-sm-4 text-center">
-			<img src = "/images/{{filme.foto}}" class="img-thumbnail"/> 
-			<table class = "table bg-white">
-				<tr>
-					<td>Gênero</td>
-					<td> 
-						{{#each generos}}
-							<a href = "/filme/results/1?titulo=&genero={{nome}}">
-								{{nome}}
-							</a>
-							{{#if @last}} {{else}} / {{/if}}
-						{{/each}}
-						{{#if DEVELOPER}}
-							<a href = "/developer/filme/{{filme.id}}/join/gender" class = "btn btn-link btn-sm" target="_blank">
-								+
-							</a>
-							<a href = "/developer/filme/{{filme.id}}/disjoin/gender" class = "btn btn-link btn-sm" target="_blank">
-								-
-							</a>
-						{{/if}}
-					</td>
-				</tr>
-				<tr>
-					<td>Lançamento</td>
-					<td>{{filme.ano}}</td>
-				</tr>
-				<tr>
-					<td>Duração</td>		
-					<td>{{filme.duracao}} min</td>
-				</tr>
-				<tr>
-					<td>Diretor</td>
-					<td>{{filme.direcao}}</td>
-				</tr>
-				<tr>
-					<td>Roteiro</td>
-					<td>{{filme.roteiro}}</td>
-				</tr>
-				<tr>
-					<td>Título original</td>
-					<td>{{filme.titulo_original}}</td>
-				</tr>
-			</table>
-		</div>
-		<div class = "col-sm-6 bg-white">
-			<h4>Sinopse</h4>
-			<p>{{filme.sinopse}}</p>
-		</div>
+	<div>
+        <h2 class = "text-dark text-center">
+	        {{filme.titulo}}
+        </h2>  
+    </div> 
+    <div  class = "text-center">
+        <img class = "img-fluid" style = "width:100pc;" src = "/images/background/{{filme.bg_foto}}">
 	</div>
-</div>
-<div class = "container-fluid">
-	<nav class = "navbar navbar-expand-lg text-dark">
-		<div class = "container-fluid">
-			<h4 class = "navbar-brand" >Trilhas Sonoras</h4>
-			<div class="collapse navbar-collapse">
-			  	<ul class="navbar-nav navbar-nav-scroll">
+    <div>
+        <table class = "table bg-white text-center">
+			<tr>
+				<td>Gênero</td>
+				<td> 
+					{{#each generos}}
+						<a href = "/filme/results/1?titulo=&genero={{nome}}">
+							{{nome}}
+						</a>
+						{{#if @last}} {{else}} / {{/if}}
+					{{/each}}
 					{{#if DEVELOPER}}
-					<li class="nav-item">
-					  <a class="nav-link" href="/developer/filme/{{filme.id}}/join/music" target = "_blank">add</a>
-					</li>
-					<li class="nav-item">
-					  <a class="nav-link" href="/developer/filme/{{filme.id}}/disjoin/music" target = "_blank">remove</a>
-					</li>
-                    <li class = "nav-item">
-                        <a class = "nav-link" href = "/developer/filme/{{filme.id}}/edit">editar filme</a>
-                    </li>
+						<a href = "/developer/filme/{{filme.id}}/join/gender" class = "btn btn-link btn-sm" target="_blank">
+							+
+						</a>
+						<a href = "/developer/filme/{{filme.id}}/disjoin/gender" class = "btn btn-link btn-sm" target="_blank">
+							-
+						</a>
 					{{/if}}
-				</ul>
-			</div>
-			<form class = "form-inline">
-				<div class = "form-group">
-					<label class = "d-none"> Digite uma música </label>
-					<input id = "musSearch" class = "form-control form-control-sm" placeholder = "Digite uma música...">
-				</div>
-			</form>
-		</div>
-	</nav>
-	<table class = "table">	
-		<tr>
-			<th>Música</th>
-			<th>Artista</th>
-			<th>Youtube</th>
-		</tr>
-		{{#each musicas}}
-		<tr>
-			<td class = "musicTitle">{{this.titulo}}</td>
-			<td>{{this.artista}}</td>
-			<td><a href = "{{this.youtube}}" target = "_blank">
-				<img src = "/images/miniatura/youtube.jpg"> 
-			</a></td>
-		</tr>
-		{{/each}}
-	</table>
+				</td>
+			</tr>
+			<tr>
+				<td>Lançamento</td>
+				<td>{{filme.ano}}</td>
+			</tr>
+			<tr>
+				<td>Duração</td>		
+				<td>{{filme.duracao}} min</td>
+			</tr>
+			<tr>
+				<td>Diretor</td>
+				<td>{{filme.direcao}}</td>
+			</tr>
+			<tr>
+				<td>Roteiro</td>
+				<td>{{filme.roteiro}}</td>
+			</tr>
+			<tr>
+				<td>Título original</td>
+				<td>{{filme.titulo_original}}</td>
+			</tr>
+		</table>
+    </div>
+    
+    <div class = "border">
+        <div>
+            <h4>Sinopse</h4>
+            <p>{{filme.sinopse}}</p>
+        </div>
+        
+        <div>
+	        <nav class = "navbar navbar-expand-lg text-dark">
+		        <div class = "container-fluid">
+			        <h4 class = "navbar-brand" >Trilhas Sonoras</h4>
+			        <div class="collapse navbar-collapse">
+			          	<ul class="navbar-nav navbar-nav-scroll">
+					        {{#if DEVELOPER}}
+					        <li class="nav-item">
+					          <a class="nav-link" href="/developer/filme/{{filme.id}}/join/music" target = "_blank">add</a>
+					        </li>
+					        <li class="nav-item">
+					          <a class="nav-link" href="/developer/filme/{{filme.id}}/disjoin/music" target = "_blank">remove</a>
+					        </li>
+                            <li class = "nav-item">
+                                <a class = "nav-link" href = "/developer/filme/{{filme.id}}/edit">editar filme</a>
+                            </li>
+					        {{/if}}
+				        </ul>
+			        </div>
+			        <form class = "form-inline">
+				        <div class = "form-group">
+					        <label class = "d-none"> Digite uma música </label>
+					        <input id = "musSearch" class = "form-control form-control-sm" placeholder = "Digite uma música...">
+				        </div>
+			        </form>
+		        </div>
+	        </nav>
+	        <table class = "table">	
+		        <tr>
+			        <th>Música</th>
+			        <th>Artista</th>
+			        <th>Youtube</th>
+		        </tr>
+		        {{#each musicas}}
+		        <tr>
+			        <td class = "musicTitle">{{this.titulo}}</td>
+			        <td>{{this.artista}}</td>
+			        <td><a href = "{{this.youtube}}" target = "_blank">
+				        <img src = "/images/miniatura/youtube.jpg"> 
+			        </a></td>
+		        </tr>
+		        {{/each}}
+	        </table>
+        </div>
+    </div>
 </div>
 
 <script type = "text/javascript">
