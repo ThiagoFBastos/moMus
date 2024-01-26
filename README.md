@@ -10,8 +10,9 @@ site criado para estudar Node.js, Express e Sequelize
 ## Uso
 
 1. importar o arquivo moMus.sql para o mysql
-2. inseirir no terminal o seguinte comando: node main.js
-3. visitar http://localhost:8181/filme/ no navegador
+2. inserir no terminal: npm install
+3. inserir no terminal o seguinte comando: node main.js
+4. visitar http://localhost:8181/filme/ no navegador
 
 ![2](https://github.com/ThiagoFBastos/moMus/blob/main/2.png)
 ![1](https://github.com/ThiagoFBastos/moMus/blob/main/1.png)
