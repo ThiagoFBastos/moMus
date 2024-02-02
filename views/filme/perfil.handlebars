@@ -105,15 +105,10 @@
 </div>
 
 <script type = "text/javascript">
-	function is_prefix(s, t) {
-		if(s.length > t.length) return false;
-		for(let i = 0; i < s.length; ++i) if(s[i].toLowerCase() != t[i].toLowerCase()) return false;
-		return true;
-	}
 	$("#musSearch").keyup(function() {
 		let query = $(this).val();
 		$(".musicTitle").each(function() {
-			if(is_prefix(query, $(this).text())) $(this).parent().show();
+			if($(this).text().toLowerCase().startsWith(query.toLowerCase())) $(this).parent().show();
 			else $(this).parent().hide();
 		});
 	});
