@@ -12,6 +12,8 @@ const indexRoutes = require('./routes/indexRoutes');
 const filmeRoutes = require('./routes/filmeRoutes');
 const developerRoutes = require('./routes/developerRoutes');
 
+require('dotenv').config();
+
 app.locals.DEVELOPER = true;
 app.locals.FILME = true;
 
@@ -43,4 +45,4 @@ app.use(function(req, res, next) {
 	res.status(404).render('404');
 });
 
-app.listen(8181, (req,res) => console.log("rodando"));
+app.listen(process.env.PORT || 8181, (req,res) => console.log("rodando"));
