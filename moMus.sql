@@ -1,5 +1,3 @@
-Terminal close -- exit!
-trib 8.0.33, for Linux (x86_64)
 --
 -- Host: localhost    Database: moMus
 -- ------------------------------------------------------
