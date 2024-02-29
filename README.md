@@ -20,9 +20,9 @@ Site para informar a trilha sonora de filmes feito com nodejs, express, sequeliz
         DB_PORT={porta do banco de dados}
     ```
 
-2. inserir no terminal: npm install
+2. insira no terminal: npm install
 3. execute o compose
-4. insera no terminal o seguinte comando: node main.js
+4. insira no terminal o seguinte comando: node main.js
 5. visite http://localhost:8181/filme/ no navegador
 
 ![2](https://github.com/ThiagoFBastos/moMus/blob/main/2.png)
