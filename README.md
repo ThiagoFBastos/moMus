@@ -16,14 +16,14 @@ Site para informar a trilha sonora de filmes feito com nodejs, express, sequeliz
         DB_PASSWORD={senha do usuário}
         DB_HOST=localhost
         DB_DIALECT=mysql
-        PORT={porta}
+        PORT={porta do localhost}
         DB_PORT={porta do banco de dados}
     ```
 
 2. insira no terminal: npm install
 3. execute o compose
 4. insira no terminal o seguinte comando: node main.js
-5. visite http://localhost:8181/filme/ no navegador
+5. visite http://localhost:{PORT}/filme/ no navegador
 
 ![2](https://github.com/ThiagoFBastos/moMus/blob/main/2.png)
 ![1](https://github.com/ThiagoFBastos/moMus/blob/main/1.png)
