@@ -1,0 +1,14 @@
+version: '3.9'
+
+services:
+    db:
+        image: mysql
+        restart: always
+        environment:
+          MYSQL_DATABASE: ${DB_DATABASE}
+          MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+        volumes:
+          - ./dbdata:/var/lib/mysql
+          - ./moMus.sql:/docker-entrypoint-initdb.d/moMus.sql
+        ports:
+         -  ${DB_PORT}:3306
