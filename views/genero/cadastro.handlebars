@@ -1,11 +1,21 @@
 <div class = "container jutify-content-center align-items-center">
-	<form method = "post" action = "/developer/genero/register">
-		
+	<form method = "post" action = "/developer/genero/add">
 		<div class = "form-group">
 			<label> Nome </label>
-			<input class = "form-control" name = "nome">
-		</div>			
-			
-		<button type = "submit" class = "btn btn-primary"> Cadastrar </button>
+            {{#if errors}}
+			    <input class = "form-control is-invalid" name = "nome">
+                <div class = "invalid-feedback">
+                    {{#each errors}}
+                        {{msg}} <br>
+                    {{/each}}
+                </div>
+            {{else}}
+			    <input class = "form-control" name = "nome">
+            {{/if}}
+		</div>
+        <br>
+        <div class = "text-center">
+		    <button type = "submit" class = "btn btn-primary"> Cadastrar </button>
+        </div>
 	</form>
 </div>

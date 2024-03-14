@@ -5,6 +5,7 @@ const Musica = require('../models/Musica');
 const Genero = require('../models/Genero');
 const FilmeGenero = require('../models/FilmeGenero');
 const asyncHandler = require('express-async-handler');
+const {body, validationResult} = require('express-validator');
 
 exports.editaGET = (req, res) => {
 	res.render('filme/editor', {
@@ -13,21 +14,55 @@ exports.editaGET = (req, res) => {
 	});
 };
 
-exports.editaPOST = asyncHandler(async (req, res, next) => {
-	let filmeId = req.params.filmeId, filme = req.filme;
-    const {titulo, sinopse, ano, duracao, foto, bg_foto, direcao, roteiro, titulo_original} = req.body;
-	filme.titulo = titulo;
-	filme.sinopse = sinopse;
-	filme.ano = ano;
-	filme.duracao = duracao;
-	filme.foto = foto;
-	filme.bg_foto = bg_foto;
-	filme.direcao = direcao;
-	filme.roteiro = roteiro;
-	filme.titulo_original = titulo_original;
-	await filme.save();
-	res.redirect('/filme/profile/' + filmeId);
-});
+exports.editaPOST = [
+    body('titulo', 'O titulo não pode ser vazio').trim().notEmpty(),
+    body('sinopse', 'A sinopse não pode ser vazia').trim().notEmpty(),
+    body('ano', 'O ano tem que ser um número positivo').isInt({min: 1}),
+    body('duracao', 'A duração tem que ser um número positivo').isInt({min: 1}),
+    body('foto', 'O nome da foto não pode ser vazia').notEmpty(),
+    body('bg_foto', 'O nome do wallpaper não pode ser vazia').notEmpty(),
+    body('direcao', 'A direção não pode ser vazia').trim().notEmpty(),
+    body('roteiro', 'O roteiro não pode ser vazio').trim().notEmpty(),
+    body('titulo_original', 'O titulo original não pode ser vazio').trim().notEmpty(),
+    (req, res, next) => {
+        let errors = validationResult(req);
+        if(errors.isEmpty()) next();
+        else {
+            errors = errors.array();
+            let errorMsgs = {
+                titulo: errors.filter(error => error.path == 'titulo'),
+                sinopse: errors.filter(error => error.path == 'sinopse'),
+                ano: errors.filter(error => error.path == 'ano'),
+                duracao: errors.filter(error => error.path == 'duracao'),
+                foto: errors.filter(error => error.path == 'foto'),
+                bg_foto: errors.filter(error => error.path == 'bg_foto'),
+                direcao: errors.filter(error => error.path == 'direcao'),
+                roteiro: errors.filter(error => error.path == 'roteiro'),
+                titulo_original: errors.filter(error => error.path == 'titulo_original')
+            };
+            res.render('filme/editor', {
+                titulo: 'Editar filme ' + req.filme.titulo,
+	            filme: req.filme,
+                errors: errorMsgs
+            });
+        }
+    },
+    asyncHandler(async (req, res, next) => {
+	    let filmeId = req.params.filmeId, filme = req.filme;
+        const {titulo, sinopse, ano, duracao, foto, bg_foto, direcao, roteiro, titulo_original} = req.body;
+	    filme.titulo = titulo;
+	    filme.sinopse = sinopse;
+	    filme.ano = ano;
+	    filme.duracao = duracao;
+	    filme.foto = foto;
+	    filme.bg_foto = bg_foto;
+	    filme.direcao = direcao;
+	    filme.roteiro = roteiro;
+	    filme.titulo_original = titulo_original;
+	    await filme.save();
+	    res.redirect('/filme/profile/' + filmeId);
+    })
+];
 
 exports.inicio = asyncHandler(async (req, res, next) => {
     const [carouselFilmes, filmesRecentes] = await Promise.all([
@@ -45,7 +80,7 @@ exports.inicio = asyncHandler(async (req, res, next) => {
 		order: [['createdAt', 'desc'], ['id', 'ASC']]})
     ]);
 	res.render('filme/inicio', {
-		titulo: 'moMus: Filmes',
+		titulo: 'Página inicial',
 		carouselFilmes: carouselFilmes,
 		filmesRecentes: filmesRecentes
 	});
@@ -148,24 +183,57 @@ exports.pesquisa = asyncHandler(async (req, res, next) => {
 });
 
 exports.cadastraGET = (req, res) => {
-	res.render('filme/cadastro', {titulo: 'moMus: cadastro de filme'})
+	res.render('filme/cadastro', {titulo: 'Cadastre um filme'})
 };
 
-exports.cadastraPOST = asyncHandler(async (req, res, next) => {
-    const {titulo, sinopse, ano, duracao, foto, bg_foto, direcao, roteiro, titulo_original} = req.body;
-    await Filme.create({
-        titulo: titulo,
-        sinopse: sinopse,
-        ano: ano,
-        duracao: duracao,
-        foto: foto,
-        bg_foto: bg_foto,
-        direcao: direcao,
-        roteiro: roteiro,
-        titulo_original: titulo_original
-    });
-	res.redirect('/developer/filme/add');
-});
+exports.cadastraPOST = [
+    body('titulo', 'O titulo não pode ser vazio').trim().notEmpty(),
+    body('sinopse', 'A sinopse não pode ser vazia').trim().notEmpty(),
+    body('ano', 'O ano tem que ser um número positivo').isInt({min: 1}),
+    body('duracao', 'A duração tem que ser um número positivo').isInt({min: 1}),
+    body('foto', 'O nome da foto não pode ser vazia').notEmpty(),
+    body('bg_foto', 'O nome do wallpaper não pode ser vazia').notEmpty(),
+    body('direcao', 'A direção não pode ser vazia').trim().notEmpty(),
+    body('roteiro', 'O roteiro não pode ser vazio').trim().notEmpty(),
+    body('titulo_original', 'O titulo original não pode ser vazio').trim().notEmpty(),
+    (req, res, next) => {
+        let errors = validationResult(req);
+        if(errors.isEmpty()) next();
+        else {
+            errors = errors.array();
+            let errorMsgs = {
+                titulo: errors.filter(error => error.path == 'titulo'),
+                sinopse: errors.filter(error => error.path == 'sinopse'),
+                ano: errors.filter(error => error.path == 'ano'),
+                duracao: errors.filter(error => error.path == 'duracao'),
+                foto: errors.filter(error => error.path == 'foto'),
+                bg_foto: errors.filter(error => error.path == 'bg_foto'),
+                direcao: errors.filter(error => error.path == 'direcao'),
+                roteiro: errors.filter(error => error.path == 'roteiro'),
+                titulo_original: errors.filter(error => error.path == 'titulo_original')
+            };
+            res.render('filme/cadastro', {
+                titulo: 'Cadastro de filme',
+                errors: errorMsgs
+            });
+        }
+    },
+    asyncHandler(async (req, res, next) => {
+        const {titulo, sinopse, ano, duracao, foto, bg_foto, direcao, roteiro, titulo_original} = req.body;
+        await Filme.create({
+            titulo: titulo,
+            sinopse: sinopse,
+            ano: ano,
+            duracao: duracao,
+            foto: foto,
+            bg_foto: bg_foto,
+            direcao: direcao,
+            roteiro: roteiro,
+            titulo_original: titulo_original
+        });
+	    res.redirect('/developer/filme/add');
+    })
+];
 
 exports.exibe = asyncHandler(async (req, res, next) => {
 	let filme = req.filme;

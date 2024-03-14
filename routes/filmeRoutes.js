@@ -3,13 +3,13 @@ const router = express.Router();
 const FilmesController = require('../controllers/filmesController');
 const Filme = require('../models/Filme');
 
-router.param('filmeId', function(req, res, next, id) {
+router.param('filmeId', (req, res, next, id) => {
 	Filme.findByPk(id).then(filme => {
 		if(filme != null) {
 			req.filme = filme;
 			next();
 		} else
-			res.render('404');
+			res.status(404).render('404');
 	}).catch(err => {
 		next(err);
 	});

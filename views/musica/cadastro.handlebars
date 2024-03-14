@@ -1,25 +1,48 @@
 <div class="container">
 	<h2 class = "text-center"> Cadastre uma musica </h2>
-	<form method = "post" action = "/developer/musica/register">
+	<form method = "post" action = "/developer/musica/add">
 		<div class = "row justify-content-center">
 			<div class = "col-auto">
 				<div class="form-group">
 					<label> Título </label>
-					<input name = "titulo" class = "form-control">
+                    {{#if errors.titulo}}
+					    <input name = "titulo" class = "form-control is-invalid">
+                        {{#each errors.titulo}}
+                            {{msg}} <br>
+                        {{/each}}
+                    {{else}}
+					    <input name = "titulo" class = "form-control">
+                    {{/if}}
 				</div>
+                <br>
 				<div class="form-group">
 					<label> Artista </label>
-					<input name = "artista" class = "form-control">
+                    {{#if errors.artista}}
+					    <input name = "artista" class = "form-control is-invalid">
+                        {{#each errors.artista}}
+                            {{msg}} <br>
+                        {{/each}}
+                    {{else}}
+					    <input name = "artista" class = "form-control">
+                    {{/if}}
 				</div>
 			</div>
 			<div class = "col-auto">
 				<div class="form-group">
 					<label> Youtube URL </label>
-					<input name = "youtube" class = "form-control">
+                    {{#if errors.youtube}}
+					    <input name = "youtube" class = "form-control is-invalid">
+                        {{#each errors.youtube}}
+                            {{msg}} <br>
+                        {{/each}}
+                    {{else}}
+					    <input name = "youtube" class = "form-control">
+                    {{/if}}
 				</div>
 			</div>
 		</div>
-		<div class = "container text-center"> 
+        <br>
+		<div class = "text-center"> 
 			<button type = "submit" class = "btn btn-primary btn-lg"> Cadastrar </button>
 		</div>
 	</form>

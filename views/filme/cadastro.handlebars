@@ -5,43 +5,133 @@
 			<div class = "col-auto">
 				<div class="form-group">
 					<label> Título </label>
-					<input name = "titulo" id = "titulo" class = "form-control">
+                    {{#if errors.titulo}}
+                        <input name = "titulo" id = "titulo" class = "form-control is-invalid">
+                        <div class = "invalid-feedback">
+                            {{#each errors.titulo}}
+                                {{msg}} <br>
+                            {{/each}}
+                        </div>
+                    {{else}}
+                        <input name = "titulo" id = "titulo" class = "form-control">
+                    {{/if}}
 				</div>
+                <br>
 				<div class = "form-group">
 					<label> Ano </label>
-					<select name = "ano" id = "ano" class="form-control form-select form-select-lg">
+					{{#if errors.ano}}
+                        <select name = "ano" id = "ano" class="form-control form-select form-select-lg is-invalid">
 					  
-					</select>
+					    </select>
+                        <div class = "invalid-feedback">
+                            {{#each errors.ano}}
+                                {{msg}} <br>
+                            {{/each}}
+                        </div>
+                    {{else}}
+                        <select name = "ano" id = "ano" class="form-control form-select form-select-lg">
+					  
+					    </select>
+                    {{/if}}
 				</div>
+                <br>
 				<div class="form-group">
 					<label> Direção </label>
-					<input name = "direcao" id = "direcao" class = "form-control">
+                    {{#if errors.direcao}}
+                        <input name = "direcao" id = "direcao" class = "form-control is-invalid">
+                        <div class = "invalid-feedback">
+                            {{#each errors.direcao}}
+                                {{msg}} <br>
+                            {{/each}}
+                        </div>
+                    {{else}}
+                        <input name = "direcao" id = "direcao" class = "form-control">
+                    {{/if}}
 				</div>
+                <br>
 				<div class="form-group">
 					<label> Duração </label>
-					<input name = "duracao" id = "duracao" class = "form-control">
+                    {{#if errors.duracao}}
+                        <input type = "number" name = "duracao" id = "duracao" class = "form-control is-invalid">
+                        <div class = "invalid-feedback">
+                            {{#each errors.duracao}}
+                                {{msg}} <br>
+                            {{/each}}
+                        </div>
+                    {{else}}
+                        <input type = "number" name = "duracao" id = "duracao" class = "form-control">
+                    {{/if}}
 				</div>
+                <br>
 				<div class="form-group">
 					<label> Sinopse </label>
-					<textarea name = "sinopse" id = "sinopse" class = "form-control"></textarea>
+                    {{#if errors.sinopse}}
+                        <textarea name = "sinopse" id = "sinopse" class = "form-control is-invalid"></textarea>
+                        <div class = "invalid-feedback">
+                            {{#each errors.sinopse}}
+                                {{msg}} <br>
+                            {{/each}}
+                        </div>
+                    {{else}}
+                        <textarea name = "sinopse" id = "sinopse" class = "form-control"></textarea>
+                    {{/if}}
 				</div>
 			</div>
 			<div class = "col-auto">
 				<div class="form-group">
 					<label> Título original </label>
-					<input name = "titulo_original" id = "titulo_original" class = "form-control">
+                    {{#if errors.titulo_original}}
+                        <input name = "titulo_original" id = "titulo_original" class = "form-control is-invalid">
+                        <div class = "invalid-feedback">
+                            {{#each errors.titulo_original}}
+                                {{msg}} <br>
+                            {{/each}}
+                        </div>
+                    {{else}}
+                        <input name = "titulo_original" id = "titulo_original" class = "form-control">
+                    {{/if}}
 				</div>
+                <br>
 				<div class="form-group">
 					<label> Roteiro </label>
-					<input name = "roteiro" id = "roteiro" class = "form-control">
+                    {{#if errors.roteiro}}
+					    <input name = "roteiro" id = "roteiro" class = "form-control is-invalid">
+                        <div class = "invalid-feedback">
+                            {{#each errors.roteiro}}
+                                {{msg}} <br>
+                            {{/each}}
+                        </div>
+                    {{else}}
+					    <input name = "roteiro" id = "roteiro" class = "form-control">
+                    {{/if}}
 				</div>
+                <br>
 				<div class="form-group">
 					<label> Foto </label>
-					<input name = "foto" id = "foto" class = "form-control">
+                    {{#if errors.foto}}
+					    <input name = "foto" id = "foto" class = "form-control is-invalid">
+                        <div class = "invalid-feedback">
+                            {{#each errors.foto}}
+                                {{msg}} <br>
+                            {{/each}}
+                        </div>
+                    {{else}}
+					    <input name = "foto" id = "foto" class = "form-control">
+                    {{/if}}
 				</div>
+                <br>
 				<div class="form-group">
 					<label> Background foto </label>
-					<input name = "bg_foto" id = "bg_foto" class = "form-control">
+                    {{#if errors.bg_foto}}
+					    <input name = "bg_foto" id = "bg_foto" class = "form-control is-invalid">
+                        <div class = "invalid-feedback">
+                            {{#each errors.bg_foto}}
+                                {{msg}} <br>
+                            {{/each}}
+                        </div>
+                    {{else}}
+					    <input name = "bg_foto" id = "bg_foto" class = "form-control">
+                    {{/if}}
 				</div>
 			</div>
 		</div>
@@ -62,31 +152,5 @@
 			option.val("" + y);
 			$("#ano").append(option);
 		}
-	});
-
-	$("#cad").on("submit", function(event) {
-		let titulo = $("#titulo").val();
-		let direcao = $("#direcao").val();
-		let roteiro = $("#roteiro").val();
-		let duracao = $("#duracao").val();
-		let sinopse = $("#sinopse").val();
-		let titulo_original = $("#titulo_original").val();
-		let foto = $("#foto").val();
-		let bg_foto = $("#bg_foto").val();
-		let stop = false;
-
-		let re = new RegExp("^\\d+$");
-		
-		if(titulo.length == 0) {alert("titulo está vazio"); stop = true;}
-		else if(direcao.length == 0) {alert("direcao está vazio"); stop = true;}
-		else if(roteiro.length == 0) {alert("roteiro está vazio"); stop = true;}
-		else if(duracao.length == 0) {alert("duracao está vazio"); stop = true;}
-		else if(!re.test(duracao)) {alert("duracao é só inteiro"); stop = true;}
-		else if(sinopse.length == 0) {alert("sinopse está vazio"); stop = true;}
-		else if(titulo_original.length == 0) {alert("titulo_original está vazio"); stop = true;}
-		else if(foto.length == 0) {alert("foto está vazio"); stop = true;}
-		else if(bg_foto.length == 0) {alert("background foto está vazio"); stop = true;}
-
-		if(stop) event.preventDefault();
 	});
 </script>

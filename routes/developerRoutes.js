@@ -3,17 +3,17 @@ const router = express.Router();
 const FilmesController = require('../controllers/filmesController');
 const MusicasController = require('../controllers/musicasController');
 const GenerosController = require('../controllers/generosController');
+const Filme = require('../models/Filme');
 
 //filmes
 
-const Filme = require('../models/Filme');
-
-router.param('filmeId', function(req, res, next, id) {
+router.param('filmeId', (req, res, next, id) => {
 	Filme.findByPk(id).then(filme => {
 		if(filme != null) {
 			req.filme = filme;
 			next();
-		} else res.render('404');
+		} else 
+            res.status(404).render('404');
 	}).catch(err => next(err));
 });
 
@@ -44,11 +44,13 @@ router.route('/filme/:filmeId(\\d+)/edit')
 router.get('/filme/:filmeId(\\d+)/delete', FilmesController.deletaFilme);
 
 //música
-router.get('/musica/add', (req, res) => res.render('musica/cadastro', {titulo: 'moMus'}));
-router.post('/musica/register', MusicasController.cadastroMusica);
+router.route('/musica/add')
+    .get(MusicasController.cadastroMusicaGET)
+    .post(MusicasController.cadastroMusica);
 
 //gêneros
-router.get('/genero/add', (req, res) => res.render('genero/cadastro', {titulo: 'moMus'}));
-router.post('/genero/register', GenerosController.cadastra);
+router.route('/genero/add')
+    .get(GenerosController.cadastraGET)
+    .post(GenerosController.cadastra);
 
 module.exports = router;
