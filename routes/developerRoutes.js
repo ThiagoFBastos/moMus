@@ -41,6 +41,8 @@ router.route('/filme/:filmeId(\\d+)/edit')
 	.get(FilmesController.editaGET)
 	.post(FilmesController.editaPOST);
 
+router.get('/filme/:filmeId(\\d+)/delete', FilmesController.deletaFilme);
+
 //música
 router.get('/musica/add', (req, res) => res.render('musica/cadastro', {titulo: 'moMus'}));
 router.post('/musica/register', MusicasController.cadastroMusica);

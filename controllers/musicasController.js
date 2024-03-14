@@ -1,5 +1,5 @@
 const Musica = require('../models/Musica');
-const asyncHandler = require('express-async-handler')
+const asyncHandler = require('express-async-handler');
 
 exports.cadastroMusica = asyncHandler(async (req, res, next) => {
     let musica = {};

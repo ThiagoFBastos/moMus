@@ -4,7 +4,7 @@ const FilmeMusica = require('../models/FilmeMusica');
 const Musica = require('../models/Musica');
 const Genero = require('../models/Genero');
 const FilmeGenero = require('../models/FilmeGenero');
-const asyncHandler = require('express-async-handler')
+const asyncHandler = require('express-async-handler');
 
 exports.editaGET = (req, res) => {
 	res.render('filme/editor', {
@@ -277,4 +277,10 @@ exports.desvinculaGeneroPOST = asyncHandler(async (req, res, next) => {
 	if(genero == null) throw new Error('genero(' + generoId + ') não encontrado');
 	await filme.removeGenero(genero);
 	res.redirect('/developer/filme/' + filmeId + '/disjoin/gender');
+});
+
+exports.deletaFilme = asyncHandler(async (req, res, next) => {
+    let filme = req.filme;
+    await filme.destroy();
+    res.redirect('/filme');
 });

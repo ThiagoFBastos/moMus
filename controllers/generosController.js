@@ -1,5 +1,5 @@
 const Genero = require('../models/Genero');
-const asyncHandler = require('express-async-handler')
+const asyncHandler = require('express-async-handler');
 
 exports.cadastra = asyncHandler(async (req, res, next) => {
     let genero = {};

@@ -1,5 +1,23 @@
+<div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Ação</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body">
+            <b>Tem certeza que dejesa excluir esta anotação?</b><br>
+            Essa ação não poderá ser desfeita.
+          </div>
+          <div class="modal-footer">
+            <a class="btn btn-danger" href = "/developer/filme/{{filme.id}}/delete">Deletar</a>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+          </div>
+        </div>
+    </div>
+</div>
 <div class="container">
-	<h2 class = "text-center"> Edite um filme </h2>
+	<h2 class = "text-center"> Edite {{filme.titulo}} </h2>
 	<form id = "cad" method = "post" action = "/developer/filme/{{filme.id}}/edit" autocomplete="off">
 		<div class = "row justify-content-center">
 			<div class = "col-auto">
@@ -7,20 +25,24 @@
 					<label>Título</label>
 					<input name = "titulo" id = "titulo" class = "form-control" value = "{{filme.titulo}}">
 				</div>
+                <br>
 				<div class = "form-group">
 					<label>Ano</label>
 					<select name = "ano" id = "ano" class="form-control form-select form-select-lg">
 					  
 					</select>
 				</div>
+                <br>
 				<div class="form-group">
 					<label> Direção </label>
 					<input name = "direcao" id = "direcao" class = "form-control" value = "{{filme.direcao}}">
 				</div>
+                <br>
 				<div class="form-group">
 					<label>Duração</label>
 					<input name = "duracao" id = "duracao" class = "form-control" value = "{{filme.duracao}}">
 				</div>
+                <br>
 				<div class="form-group">
 					<label>Sinopse</label>
 					<textarea name = "sinopse" id = "sinopse" class = "form-control">{{filme.sinopse}}</textarea>
@@ -31,26 +53,30 @@
 					<label>Título original</label>
 					<input name = "titulo_original" id = "titulo_original" class = "form-control" value = "{{filme.titulo_original}}">
 				</div>
+                <br>
 				<div class="form-group">
 					<label>Roteiro</label>
 					<input name = "roteiro" id = "roteiro" class = "form-control" value = "{{filme.roteiro}}">
 				</div>
+                <br>
 				<div class="form-group">
 					<label>Foto</label>
 					<input name = "foto" id = "foto" class = "form-control" value = "{{filme.foto}}">
 				</div>
+                <br>
 				<div class="form-group">
 					<label>Background foto</label>
 					<input name = "bg_foto" id = "bg_foto" class = "form-control" value = "{{filme.bg_foto}}">
 				</div>
 			</div>
 		</div>
-
+        <br>
 		<div class = "container text-center"> 
+            <a class = "btn btn-danger btn-lg" data-bs-toggle="modal" data-bs-target="#deleteModal">Deletar</a>
 			<button type = "submit" class = "btn btn-primary btn-lg">Editar</button>
 		</div>
 	</form>
-</div> 
+</div>
 
 <script type = "text/javascript">
 	$(document).ready(function() {
